@@ -1,24 +1,27 @@
 // var watchify = require('watchify');
 // var browserify = require('browserify');
 var config = require("./pageConfig.js");
+var path = require("path");
 var gulp = require("gulp");
+var useref = require("gulp-useref");
 var less = require("gulp-less");
 var series = require('stream-series');
-// var useref = require("gulp-useref");
+var minifyCss = require('gulp-clean-css');
 var htmlmin = require("gulp-htmlmin");
-// var cssnano = require("gulp-cssnano");
+var revCollector = require("gulp-rev-collector");
+var cssnano = require("gulp-cssnano");
 var htmlmin = require("gulp-htmlmin");
 // var runSequence = require("run-sequence");
 var del = require("del");
 var autoprefixer = require("gulp-autoprefixer");
-// var gulpif = require("gulp-if");
+var gulpif = require("gulp-if");
 var uglify = require("gulp-uglify");
 var browserSync = require("browser-sync");
 var inject = require("gulp-inject");
 var sort = require("sort-stream2");
 var babel = require("gulp-babel");
 const changed = require("gulp-changed");
-// const rev = require("gulp-rev");
+const rev = require("gulp-rev");
 var uglify = require("gulp-uglify");
 // var t = new Date().getTime();
 // const reload = browserSync.reload;
@@ -30,6 +33,11 @@ var stylesSource = [].concat(utilLocation.css);//加载额外配置的css
 var imgsSource = [];
 var htmlTaskList = [];
 var allPageFolder = [];
+var devFolder = path.resolve(__dirname, "./dev");
+var buildFolder = path.resolve(__dirname, "./dist");
+var md5Build = path.resolve(__dirname, "./md5");
+var libPath = path.resolve(__dirname, "./src/lib");
+var copyImg = [];
 var buildHtml = function ({ pageName }) {
   gulp.task(pageName, function (done) {
     var target = gulp.src(`./src/pages/${pageName}/${pageName}.html`);
@@ -53,11 +61,11 @@ var buildHtml = function ({ pageName }) {
         inject(insertCssStream, {
           relative: true,
           addPrefix: "./css",
-          transform:function(filepath, file, index, length, targetFile){
+          transform: function (filepath, file, index, length, targetFile) {
             var reg = /[a-zA-Z]*\.((less)|(css))/;
             var result = reg.exec(filepath);
             var fileName = result ? result[0] : "";
-            fileName = fileName.replace(/\.((less)|(css))/,"");
+            fileName = fileName.replace(/\.((less)|(css))/, "");
             return `<link rel="stylesheet" href="./css/${fileName}.css">`
           }
         })
@@ -71,7 +79,7 @@ var buildHtml = function ({ pageName }) {
       inject(insertJsStream, {
         relative: true,
         addPrefix: "./js",
-        transform:function(filepath, file, index, length, targetFile){
+        transform: function (filepath, file, index, length, targetFile) {
           var reg = /[a-zA-Z]*[.0-9]*\.js/;
           var result = reg.exec(filepath);
           var fileName = result ? result[0] : "";
@@ -101,7 +109,7 @@ var buildHtml = function ({ pageName }) {
       //     removeOptionalTags: true
       //   })
       // )
-      .pipe(gulp.dest("./dist"));
+      .pipe(gulp.dest(devFolder));
     done();
   });
 }
@@ -109,19 +117,19 @@ var buildHtml = function ({ pageName }) {
  * 自动页面配置的滴三方 js css 导入处理的数组
  */
 var pageConfigKeys = Object.keys(pageConfig);
-for(var pageConfigKey of pageConfigKeys){
+for (var pageConfigKey of pageConfigKeys) {
   var itemConfig = pageConfig[pageConfigKey];
-  if(itemConfig.partialCss && itemConfig.partialCss.length > 0 ){
+  if (itemConfig.partialCss && itemConfig.partialCss.length > 0) {
     stylesSource = stylesSource.concat(itemConfig.partialCss);
   }
-  if(itemConfig.partialJs && itemConfig.partialJs.length > 0 ){
+  if (itemConfig.partialJs && itemConfig.partialJs.length > 0) {
     scriptsSource = scriptsSource.concat(itemConfig.partialJs);
   }
 }
 for (let pageName of pageNames) {
   scriptsSource.push(`./src/pages/${pageName}/js/*.js`);
-  stylesSource.push(`./src/pages/${pageName}/css/*.*`);
-  imgsSource.push(`./src/pages/${pageName}/img/*.*`);
+  stylesSource.push(`./src/pages/${pageName}/css/**`);
+  imgsSource.push(`./src/pages/${pageName}/img/**`);
   allPageFolder.push(`./src/pages/${pageName}`);
 }
 for (let pageName of pageNames) {
@@ -152,8 +160,8 @@ var scripts = function (done) {
         // plugins: ["@babel/runtime"]
       })
     )
-    .pipe(uglify())
-    .pipe(gulp.dest("./dist/js"));
+    // .pipe(uglify())
+    .pipe(gulp.dest(path.resolve(devFolder, './js')));
   done();
 };
 var styles = function (done) {
@@ -175,14 +183,14 @@ var styles = function (done) {
     .pipe(less())
     .pipe(autoprefixer(AUTOPREFIXER_BROWSERS))
     // .pipe(cssnano())
-    .pipe(gulp.dest("./dist/css"));
+    .pipe(gulp.dest(path.resolve(devFolder, "./css")));
   done();
 };
 var imgs = function () {
   return gulp.src(imgsSource)
     .pipe(changed("./temp"))
     .pipe(gulp.dest("./temp"))
-    .pipe(gulp.dest("./dist/img/"));
+    .pipe(gulp.dest(path.resolve(devFolder, "./img")));
 };
 
 var htmlLinkChange = function (path) {
@@ -193,12 +201,22 @@ var htmlLinkChange = function (path) {
     }
   }
 }
+var folderChange = function (path) {
+  var reg = /[a-zA-Z]{1,}\.html/;
+  var result = reg.exec(path);
+  if (result) {
+    var taskName = result[0].replace('.html', "");
+    gulp.series(taskName)();
+  }
+}
 var watcher = function (done) {
   gulp.watch(scriptsSource, scripts);
   gulp.watch(stylesSource, styles);
+  gulp.watch(libPath, copyLib);
   var watcher = gulp.watch(allPageFolder);
   watcher.on("add", htmlLinkChange)
   watcher.on("unlink", htmlLinkChange);
+  watcher.on("change", folderChange);
   gulp.watch(imgsSource, imgs);
   done();
 };
@@ -213,14 +231,20 @@ var server = function (done) {
     //       will present a certificate warning in the browser.
     // https: true,
     watch: true,
-    files: ["dist/css/*.css", "dist/js/*.js", "dist/*.html"],
-    server: "dist",
+    files: ["dev/css/*.css", "dev/js/*.js", "dev/*.html"],
+    server: "dev",
     reloadDelay: 500,
     port: 3000
   });
   done();
 };
-gulp.task("clean", () => del(["dist", "temp"]));
+var copyLib = function () {
+  return gulp.src(libPath+"/**")
+    .pipe(changed("./temp"))
+    .pipe(gulp.dest("./temp"))
+    .pipe(gulp.dest(devFolder + "/lib"));
+}
+gulp.task("clean", () => del([devFolder, "./temp"]));
 gulp.task(
   "default",
   gulp.series(
@@ -230,7 +254,54 @@ gulp.task(
     //   console.log(htmlTaskList);
     //   done()
     // }
-    gulp.parallel(scripts, styles, htmlTaskList, imgs, watcher),
-    // server
+    gulp.parallel(copyLib, scripts, styles, htmlTaskList, imgs, watcher),
+    server
   )
 );
+//扫描开发环境下面的 html 
+var cleanBuild = function () {
+  return del([buildFolder])
+}
+var combine = function () {
+  return gulp.src(devFolder + '/*.html')
+    .pipe(useref())
+    .pipe(gulpif('*.js', uglify()))
+    // .pipe(cssnano())
+    .pipe(gulpif('*.css', minifyCss({ compatibility: 'ie8' })))
+    .pipe(gulp.dest(buildFolder));
+}
+gulp.task("combine", gulp.series(cleanBuild, combine));
+
+
+
+gulp.task('md5', function () {
+  return gulp.src(buildFolder + "/*/*")
+    .pipe(rev())
+    .pipe(gulp.dest(md5Build))
+    .pipe(rev.manifest({ merge: true }))
+    .pipe(gulp.dest(md5Build));
+})
+//md5命替换
+gulp.task('rev', function () {
+  //吧开发环境里面的 lib 拷贝过来
+  gulp.src(devFolder+'/lib')
+  .pipe(gulp.dest(md5Build +"/lib"))
+  return gulp.src([md5Build + '/*.json', buildFolder + "/*.html"])
+    .pipe(revCollector({
+      replaceReved: true,
+    }))
+    .pipe(
+      htmlmin({
+        removeComments: true,
+        collapseWhitespace: true,
+        collapseBooleanAttributes: true,
+        removeAttributeQuotes: true,
+        removeRedundantAttributes: true,
+        removeEmptyAttributes: true,
+        removeScriptTypeAttributes: true,
+        removeStyleLinkTypeAttributes: true,
+        removeOptionalTags: true
+      })
+    )
+    .pipe(gulp.dest(md5Build));
+})

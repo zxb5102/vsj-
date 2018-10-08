@@ -1,9 +1,6 @@
 var pageConfig = {
-    home: {
-        partialCss: ["./src/util/css/common.less"],
-        partialJs: ["./src/util/js/one.js", "./src/util/js/util.js"]
+    index: {
     },
-    user: {}
 }
 var utilLocation = {
     js: [],

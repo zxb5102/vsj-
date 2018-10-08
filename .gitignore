@@ -1,5 +1,7 @@
 node_modules/*
 temp/*
 dist/*
+dev/
 copyVideo/*
 video/*
+*.rar
