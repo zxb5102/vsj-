@@ -1,9 +1,11 @@
 // @topHeight: 600px;
 @topHeight: 100vh;
 @videoImgHeight: 100vh;
-@videoHideTime:4s;
+@videoHideTime: 4s;
 @cloudFastTime: 100s;
 @cloudSlowTime: 120s;
+// @cloudFastTime: 10s;
+// @cloudSlowTime: 12s;
 .top-show {
     height: @videoImgHeight;
     position: absolute;
@@ -20,17 +22,16 @@
         width: 100%;
         top: 0px;
         left: 0%;
-        z-index: 0;
-         // animation: cloudMove @cloudTime cubic-bezier(0,0, 1, 1) 0s 2 alternate both; 
+        z-index: 0; // animation: cloudMove @cloudTime cubic-bezier(0,0, 1, 1) 0s 2 alternate both; 
         // animation: myfirst 2s ease 0s 2 alternate both;
     }
     .cloud-fast {
         left: 100%;
-        animation: cloudMove @cloudFastTime cubic-bezier(0, 0, 1, 1) 0s 2 alternate both;
+        animation: cloudMove @cloudFastTime cubic-bezier(0, 0, 1, 1) 0s infinite alternate both;
     }
     .cloud-slow {
-        left: -50%;
-        animation: cloudMove2 @cloudSlowTime cubic-bezier(0, 0, 1, 1) 1s 2 normal both;
+        left: -100%;
+        animation: cloudMove2 @cloudSlowTime cubic-bezier(0, 0, 1, 1) 0s infinite alternate both;
     }
 }
 
@@ -43,21 +44,13 @@
         left: -100%;
     }
 }
+
 @keyframes cloudMove2 {
     0% {
-        left:-50%;
+        left: -100%;
     }
-    25%{
-        left:100%;
-    }
-    50%{
-        left:-50%;
-    }
-    75%{
-        left:-100%
-    }
-    100%{
-        left: -50%;
+    100% {
+        left: 100%;
     }
 }
 
@@ -120,5 +113,45 @@
     }
     .video-hide {
         opacity: 0;
+    }
+}
+
+.nav-header {
+    position: fixed;
+    top: 0;
+    left: 0px;
+    width: 100%;
+    height: 80px;
+    z-index: 50;
+    background-color: rgba(124, 132, 144, 0.8);
+    border-bottom: 1px solid white; // background-color: rgba(123, 123, 123, 0.4);
+    .item-detail {
+        cursor: pointer;
+    }
+}
+
+.second-tab {
+    height: 418px;
+}
+
+.third-tab {
+    height: 456px;
+}
+
+.video-close-btn {
+    height: 50px;
+    width: 50px; // background-color: white;
+    position: absolute;
+    top: 100px;
+    z-index: 30;
+    right: 20px;
+    background-image: url(/img/close.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    cursor: pointer;
+    transition: all 0.5s ease 0s;
+    &:hover{
+        transform: rotate(180deg);
     }
 }
