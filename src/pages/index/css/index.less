@@ -4,6 +4,7 @@
 @videoHideTime: 4s;
 @cloudFastTime: 100s;
 @cloudSlowTime: 120s;
+@import "./variable.less";
 // @cloudFastTime: 10s;
 // @cloudSlowTime: 12s;
 .top-show {
@@ -74,24 +75,39 @@
     }
     .left-car,
     .right-car {
-        img {
+        .wrap-img {
+            position: relative;
+            display: inline-block;
             height: auto;
             width: @carWidth;
             cursor: pointer;
             transition: all 1s ease 0s;
+            img{
+                width: 100%;
+                height: auto;
+            }
             &:hover {
                 z-index: 100;
                 transform: scale(@scal);
             }
+            .car-name{
+                position: absolute;
+                bottom: -28px;
+                left: 50%;
+                color: white;
+                transform: translateX(-50%);
+                min-width: 56px;
+                    font-size: 14px;
+            }
         }
     }
     .left-car {
-        img {
+        .wrap-img {
             margin-left: @carMargin;
         }
     }
     .right-car {
-        img {
+        .wrap-img {
             margin-right: @carMargin;
         }
     }
@@ -156,13 +172,13 @@
 @lineNodeHeight: 3px;
 @detailNodeWidth: 20px;
 .second-tab {
-    height: 448px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    // display: flex;
+    // justify-content: center;
+    // align-items: center;
     border-bottom: 1px solid black;
     // padding-top: 500px;
     .date-hold {
+        height: 448px;
         font-size: 0px;
         display: flex; // justify-content: center;
         align-items: center;
