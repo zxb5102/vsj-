@@ -13,9 +13,9 @@
     left: 0px;
     width: 100%;
     z-index: 10;
-    background-image: url(/img/sky.png);
+    background-image: url(/img/new-city.png);
     background-repeat: no-repeat;
-    background-position: top;
+    background-position: center;
     background-size: cover;
     .cloud {
         position: absolute;
@@ -59,14 +59,13 @@
 @scal: 1.8;
 .hold-car {
     position: absolute;
-    bottom: 28%;
+    bottom: 8%;
     z-index: 2;
     height: 11vw;
-    width: 100%;
-    background-image: url(/img/stage.png);
-    background-position: bottom;
-    background-size: cover;
-    background-repeat: no-repeat;
+    width: 100%; // background-image: url(/img/new-city.png);
+    // background-position: bottom;
+    // background-size: cover;
+    // background-repeat: no-repeat;
     .city {
         position: absolute;
         width: 100%;
@@ -130,12 +129,9 @@
     }
 }
 
-.second-tab {
-    height: 418px;
-}
-
 .third-tab {
-    height: 456px;
+    // height: 456px;
+    padding:80px 0px;
 }
 
 .video-close-btn {
@@ -151,7 +147,125 @@
     background-size: contain;
     cursor: pointer;
     transition: all 0.5s ease 0s;
-    &:hover{
+    &:hover {
         transform: rotate(180deg);
+    }
+}
+
+@lineNodeWidth: 5vw;
+@lineNodeHeight: 3px;
+@detailNodeWidth: 20px;
+.second-tab {
+    height: 448px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 1px solid black;
+    // padding-top: 500px;
+    .date-hold {
+        font-size: 0px;
+        display: flex; // justify-content: center;
+        align-items: center;
+        display: flex;
+        justify-content: center;
+        .line-node {
+            width: @lineNodeWidth;
+            height: @lineNodeHeight;
+            background-color: black;
+            line-height: 0px;
+            display: inline-block;
+        }
+        .detail-node {
+            display: inline-block;
+            height: @detailNodeWidth;
+            width: @detailNodeWidth;
+            border-radius: 50%;
+            background-color: green;
+            position: relative;
+            font-size: initial;
+
+            .year-hold {
+                position: absolute;
+                top: 100%;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+            @topPadding:5px;
+            @borderHeight:15px;
+            @borderMsg:@borderHeight solid transparent;
+            @descHoldOffset:80px;
+            .desc-hold{
+                position: absolute;
+                width:200px;
+                left: 50%;
+                transform: translateX(-50%);
+                border: 1px solid black;
+                padding: @topPadding 10px;
+                border-radius: 5px;
+            }
+
+            .desc-hold-bottom{
+                top:@descHoldOffset;
+                &::before{
+                    content: "";
+                    height: 10px;
+                    width:10px;
+                    position: absolute;
+                    border-left: @borderMsg;
+                    border-bottom: @borderHeight solid black;
+                    border-right: @borderMsg;
+                    border-top: @borderMsg;
+                    top:-@borderHeight*2 ;
+                    left:50%;
+                    transform: translateX(-50%);
+                }
+            }
+            .desc-hold-top{
+                bottom:@descHoldOffset;
+                &::after{
+                    content: "";
+                    height: 10px;
+                    width:10px;
+                    position: absolute;
+                    border-left: @borderMsg;
+                    border-top: @borderHeight solid black;
+                    border-right: @borderMsg;
+                    border-bottom: @borderMsg;
+                    bottom:-@borderHeight*2 ;
+                    left:50%;
+                    transform: translateX(-50%);
+                }
+            }
+            .desc-hold-end{
+                left: -153px;
+                transform: unset;
+                &::before{
+                    left: 85%;
+                }
+                &::after{
+                    left: 85%;
+                }
+            }
+            .desc-hold-start{
+                left: -20px;
+                transform: unset;
+                &::before{
+                    left: 14%;
+                }
+                &::after{
+                    left: 14%;
+                }
+            }
+        }
+    }
+}
+.third-tab{
+    .service-item{
+        width: 262px;
+        text-align: center;
+        img{
+            height: 56px;
+            width: auto;
+        }
     }
 }
