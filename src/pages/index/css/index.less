@@ -141,10 +141,14 @@
     width: 100%;
     height: 80px;
     z-index: 50;
-    background-color: rgba(124, 132, 144, 0.8);
+    background-color:rgb(47, 92, 141);
     border-bottom: 1px solid white; // background-color: rgba(123, 123, 123, 0.4);
     .item-detail {
         cursor: pointer;
+    }
+    .logo img{
+        height:45px;
+        width:auto;
     }
 }
 
@@ -335,16 +339,31 @@
 }
 
 .top-video-font{
-    left: 50%;
+    left: -100%;
     transform: translateX(-50%);
     top: 150px;
     color: white;
     z-index: 20;
     font-size: 50px;
     opacity: 0;
-    transition: opacity var(--video-font-time);
+    transition: all var(--video-font-time);
+}
+.top-video-font-end{
+    right: -100%;
+    transform: translateX(50%);
+    top: 150px;
+    color: white;
+    z-index: 20;
+    font-size: 50px;
+    opacity: 0;
+    transition: all var(--video-font-time);
+}
+.top-video-font-end-opacity-show{
+    right: 50%;
+    opacity: 1;
 }
 .top-video-font-opacity-show{
+    left:50%;
     opacity: 1;
 }
 .video-font{
