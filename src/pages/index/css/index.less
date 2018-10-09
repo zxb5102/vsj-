@@ -7,6 +7,9 @@
 @import "./variable.less";
 // @cloudFastTime: 10s;
 // @cloudSlowTime: 12s;
+:root {
+    --video-font-time: 4s; 
+}
 .top-show {
     height: @videoImgHeight;
     position: absolute;
@@ -325,4 +328,25 @@
             background-image: url(/img/end-tab/6.jpg);
         }
     }
+}
+@font-face {
+    font-family: video-font;
+    src: url(/img/video-top-font.ttf);
+}
+
+.top-video-font{
+    left: 50%;
+    transform: translateX(-50%);
+    top: 150px;
+    color: white;
+    z-index: 20;
+    font-size: 50px;
+    opacity: 0;
+    transition: opacity var(--video-font-time);
+}
+.top-video-font-opacity-show{
+    opacity: 1;
+}
+.video-font{
+    font-family: 'video-font'
 }
