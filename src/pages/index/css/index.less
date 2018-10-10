@@ -8,8 +8,9 @@
 // @cloudFastTime: 10s;
 // @cloudSlowTime: 12s;
 :root {
-    --video-font-time: 4s; 
+    --video-font-time: 4s;
 }
+
 .top-show {
     height: @videoImgHeight;
     position: absolute;
@@ -141,14 +142,14 @@
     width: 100%;
     height: 80px;
     z-index: 50;
-    background-color:rgb(47, 92, 141);
+    background-color: rgb(47, 92, 141);
     border-bottom: 1px solid white; // background-color: rgba(123, 123, 123, 0.4);
     .item-detail {
         cursor: pointer;
     }
-    .logo img{
-        height:45px;
-        width:auto;
+    .logo img {
+        height: 45px;
+        width: auto;
     }
 }
 
@@ -227,6 +228,8 @@
                 border: 1px solid #3782b2;
                 padding: @topPadding 10px;
                 border-radius: 5px;
+                color: black;
+                box-shadow: 4px 4px 9px 0px rgba(0, 0, 0, 0.25882352941176473);
             }
             .desc-hold-bottom {
                 top: @descHoldOffset;
@@ -333,12 +336,13 @@
         }
     }
 }
+
 @font-face {
     font-family: video-font;
     src: url(/img/video-top-font.ttf);
 }
 
-.top-video-font{
+.top-video-font {
     left: -100%;
     transform: translateX(-50%);
     top: 150px;
@@ -348,7 +352,8 @@
     opacity: 0;
     transition: all var(--video-font-time);
 }
-.top-video-font-end{
+
+.top-video-font-end {
     right: -100%;
     transform: translateX(50%);
     top: 150px;
@@ -358,14 +363,59 @@
     opacity: 0;
     transition: all var(--video-font-time);
 }
-.top-video-font-end-opacity-show{
+
+.top-video-font-end-opacity-show {
     right: 50%;
     opacity: 1;
 }
-.top-video-font-opacity-show{
-    left:50%;
+
+.top-video-font-opacity-show {
+    left: 50%;
     opacity: 1;
 }
-.video-font{
+
+.video-font {
     font-family: 'video-font'
+}
+
+.about {
+    width: 100%;
+    height: 320px;
+    background: #3782b2;
+    overflow: hidden;
+    padding-top: 78px;
+    padding-left: 45px;
+    .about_top {
+        // width: 1264px;
+        height: 156px;
+        ul {
+            padding: 0px;
+            margin: 0px;
+            li {
+                float: left;
+                width: 103px;
+                margin-bottom: 13px;
+                list-style: none;
+                a {
+                    color: #fff;
+                    text-decoration: none;
+                    &:hover{
+                        text-decoration: underline;
+                    }
+                }
+            }
+        }
+        .item {
+            width: 206px;
+            font-size: 13px;
+            line-height: 12px;
+            margin-right: 56px;
+            float: left;
+            p {
+                margin-bottom: 30px;
+                font-size: 13px;
+                color: #fff;
+            }
+        }
+    }
 }
