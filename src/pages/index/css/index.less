@@ -79,22 +79,21 @@
     }
     .left-car,
     .right-car {
+        @imgTransitionTime: 1s;
         .wrap-img {
             position: relative;
             display: inline-block;
             height: auto;
             width: @carWidth;
             cursor: pointer;
-            transition: all 1s ease 0s;
+            transition: all @imgTransitionTime ease 0s;
             img {
                 width: 100%;
                 height: auto;
             }
-            &:hover {
-                z-index: 100;
-                transform: scale(@scal);
-            }
             .car-name {
+                opacity: 0;
+                transition: opacity @imgTransitionTime;
                 position: absolute;
                 bottom: -28px;
                 left: 50%;
@@ -102,6 +101,13 @@
                 transform: translateX(-50%);
                 min-width: 56px;
                 font-size: 14px;
+            }
+            &:hover {
+                z-index: 100;
+                transform: scale(@scal);
+                .car-name {
+                    opacity: 1;
+                }
             }
         }
     }
@@ -144,8 +150,19 @@
     z-index: 50;
     background-color: rgb(47, 92, 141);
     border-bottom: 1px solid white; // background-color: rgba(123, 123, 123, 0.4);
+
     .item-detail {
         cursor: pointer;
+        padding-bottom: 5px;
+        transition: all 0.35s;
+        color: white;
+        border-bottom: 2px solid transparent;
+        // width:105px;
+    }
+    .active {
+        border-bottom: 2px solid white;
+        font-weight: bold;
+        // font-size: 18px;
     }
     .logo img {
         height: 45px;
@@ -399,7 +416,7 @@
                 a {
                     color: #fff;
                     text-decoration: none;
-                    &:hover{
+                    &:hover {
                         text-decoration: underline;
                     }
                 }
@@ -417,5 +434,11 @@
                 color: #fff;
             }
         }
+    }
+}
+
+.contact {
+    &>div {
+        margin-bottom: 13px;
     }
 }

@@ -46,3 +46,19 @@ videoBtn.addEventListener('click', () => {
     videoBtn.classList.add('d-none');
     videoFont.classList.add('d-none');
 });
+document.querySelector('.top-nav-item').addEventListener('click',function(e){
+    e.preventDefault();
+    // console.log(.is('a'));
+    if (!$( e.target ).is('.item-detail'))
+        return 
+    var target = document.querySelector(e.target.dataset.target);
+    var headerHeight = document.querySelector(".nav-header").offsetHeight;
+    console.log(headerHeight);
+    var location = target.getBoundingClientRect().top + window.scrollY - headerHeight;
+    $( "html, body" ).animate({
+    scrollTop: location,
+  }, 500);
+});
+// document.query
+$('body').scrollspy({ target: '#top-nav-item-list' ,offset:80})
+// $('body').scrollspy({ target: '#navbar-example' })
