@@ -12,7 +12,7 @@ video.addEventListener("transitionend", function (event) {
 video.addEventListener('playing', function () {
     videoFont.classList.add('top-video-font-opacity-show');
     //视频已经开始播放了
-    var hideTime = 4 * 1000;
+    var hideTime = videoFontEnd * 1000;
     var totalTime = 16 * 1000;
     var offsetTime = totalTime - hideTime;
     window.setTimeout(() => {
