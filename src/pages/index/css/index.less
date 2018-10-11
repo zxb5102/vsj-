@@ -18,7 +18,7 @@
     left: 0px;
     width: 100%;
     z-index: 10;
-    background-image: url(/img/new-city.png);
+    background-image: url(/img/new-city.jpg);
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
@@ -130,15 +130,46 @@
     position: relative;
     .top-video {
         width: 100%;
-        height: 100%;
+        height: auto;
         transition: opacity @videoHideTime;
-        position: relative;
-        z-index: 20; // z-index: 0;
-        object-fit: cover;
+        position: relative; // top:-3vw;
+        z-index: 200; // z-index: 0;
     }
-    .video-hide {
-        opacity: 0;
+    @supports (object-fit: cover) {
+        .top-video {
+            height: 100%;
+            object-fit: cover;
+        }
+    } // @media (max-width: 1202px) {
+    //     .top-video {
+    //         height: 100vh;
+    //         width: 100%; // object-fit: cover;
+    //     }
+    // }
+    @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) and (max-width:1102px) {
+                .top-video {
+            height: 100vh ;
+        }
+        /* IE10+ CSS */
+     }
+    // @media screen and (-ms-high-contrast: none),(-ms-high-contrast: active){
+    //     /* IE10+ CSS */
+    // }
+    // @supports (-ms-flex:1){
+    // }
+    // @media screen and (max-width: 1200px) {
+    // }
+    @supports (-ms-accelerator:true) {
+        /* IE Edge 12+ CSS */
+        .top-video {
+            height: auto;
+            object-fit: cover;
+        }
     }
+
+}
+.video-hide {
+    opacity: 0;
 }
 
 .nav-header {
@@ -147,22 +178,19 @@
     left: 0px;
     width: 100%;
     height: 80px;
-    z-index: 50;
+    z-index: 500;
     background-color: rgb(47, 92, 141);
     border-bottom: 1px solid white; // background-color: rgba(123, 123, 123, 0.4);
-
     .item-detail {
         cursor: pointer;
         padding-bottom: 5px;
         transition: all 0.35s;
         color: white;
-        border-bottom: 2px solid transparent;
-        // width:105px;
+        border-bottom: 2px solid transparent; // width:105px;
     }
     .active {
         border-bottom: 2px solid white;
-        font-weight: bold;
-        // font-size: 18px;
+        font-weight: bold; // font-size: 18px;
     }
     .logo img {
         height: 45px;
@@ -226,7 +254,7 @@
             border-radius: 50%;
             background-color: #3782b2;
             position: relative;
-            font-size: initial;
+            font-size: 1rem;
             .year-hold {
                 position: absolute;
                 top: 100%;
@@ -354,11 +382,10 @@
     }
 }
 
-@font-face {
-    font-family: video-font;
-    src: url(/img/video-top-font.ttf);
-}
-
+// @font-face {
+//     font-family: video-font;
+//     // src: url(/img/video-top-font.ttf);
+// }
 .top-video-font {
     left: -100%;
     transform: translateX(-50%);
@@ -392,7 +419,9 @@
 }
 
 .video-font {
-    font-family: 'video-font'
+    font-family: 'video-font';
+    position: relative;
+    z-index:400;
 }
 
 .about {
@@ -441,4 +470,14 @@
     &>div {
         margin-bottom: 13px;
     }
+}
+.video-mask{
+    position: absolute;
+    top:0px;
+    left:0px;
+    height: 100%;
+    width:100%;
+    background-color: black;
+    z-index: 100;
+    transition: all 4s;
 }
