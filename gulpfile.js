@@ -10,6 +10,7 @@ var minifyCss = require('gulp-clean-css');
 var htmlmin = require("gulp-htmlmin");
 var revCollector = require("gulp-rev-collector");
 var cssnano = require("gulp-cssnano");
+const imagemin = require('gulp-imagemin');
 var htmlmin = require("gulp-htmlmin");
 // var runSequence = require("run-sequence");
 var del = require("del");
@@ -238,6 +239,7 @@ var server = function (done) {
   });
   done();
 };
+gulp.task('server',server);
 var copyLib = function () {
   return gulp.src(libPath+"/**")
     .pipe(changed("./temp"))
@@ -281,11 +283,21 @@ gulp.task('md5', function () {
     .pipe(rev.manifest({ merge: true }))
     .pipe(gulp.dest(md5Build));
 })
+// gulp.task("miniimg",function(){
+//   return gulp.src('dev/img/car/**')
+// 		.pipe(imagemin({
+//       verbose:true
+//     }))
+// 		.pipe(gulp.dest('./miniImg'))
+//   // imagemin
+// });
 //md5命替换
 gulp.task('rev', function () {
   //吧开发环境里面的 lib 拷贝过来
-  gulp.src(devFolder+'/lib')
-  .pipe(gulp.dest(md5Build +"/lib"))
+  gulp.src(devFolder+'/lib/**')
+  .pipe(gulp.dest(md5Build +"/lib"));
+  gulp.src(devFolder+'/img/**')
+  .pipe(gulp.dest(md5Build +"/img"));
   return gulp.src([md5Build + '/*.json', buildFolder + "/*.html"])
     .pipe(revCollector({
       replaceReved: true,
@@ -305,3 +317,7 @@ gulp.task('rev', function () {
     )
     .pipe(gulp.dest(md5Build));
 })
+// 使用说明 
+  /**
+   * 先是 gulp  default ==> gulp combine ==> gulp md5 ==> gulp rev
+   */

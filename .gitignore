@@ -4,4 +4,6 @@ dist/*
 dev/
 copyVideo/*
 video/*
+md5/*
+dis/*
 *.rar
