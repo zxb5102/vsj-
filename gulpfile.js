@@ -181,7 +181,9 @@ var styles = function (done) {
     .src(stylesSource)
     .pipe(changed("./temp"))
     .pipe(gulp.dest("./temp"))
-    .pipe(less())
+    .pipe(less({
+      paths:["./src/util/css/"]
+    }))
     .pipe(autoprefixer(AUTOPREFIXER_BROWSERS))
     // .pipe(cssnano())
     .pipe(gulp.dest(path.resolve(devFolder, "./css")));
