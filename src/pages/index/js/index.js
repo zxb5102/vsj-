@@ -48,6 +48,7 @@ videoBtn.addEventListener('click', () => {
     video.classList.add('d-none');
     videoBtn.classList.add('d-none');
     videoFont.classList.add('d-none');
+    videoMask.classList.add('d-none');
 });
 document.querySelector('.top-nav-item').addEventListener('click', function (e) {
     e.preventDefault();
