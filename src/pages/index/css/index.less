@@ -16,7 +16,7 @@
     left: 0px;
     width: 100%;
     z-index: 10;
-    background-image: url(/img/new-city.jpg);
+    background-image: url(/img/video/bg.png);
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
@@ -57,12 +57,13 @@
     }
 }
 
-@carMargin: -20px;
-@carWidth: 15%;
-@scal: 1.8;
+@carMargin: -5vw;
+@carWidth: 15vw;
+@scal: 1.4;
+@carGutter:10px;
 .hold-car {
     position: absolute;
-    bottom: 8%;
+    bottom: 20%;
     z-index: 2;
     height: 11vw;
     width: 100%; // background-image: url(/img/new-city.png);
@@ -113,11 +114,13 @@
         .wrap-img {
             margin-left: @carMargin;
         }
+        margin-right: @carGutter;
     }
     .right-car {
         .wrap-img {
             margin-right: @carMargin;
         }
+        margin-left: @carGutter;
     }
 }
 
