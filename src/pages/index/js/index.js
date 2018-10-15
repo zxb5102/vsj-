@@ -62,7 +62,7 @@ document.querySelector('.top-nav-item').addEventListener('click', function (e) {
     var target = document.querySelector(e.target.dataset.target);
     var headerHeight = document.querySelector(".nav-header").offsetHeight;
     var scroll = window.scrollY || document.documentElement.scrollTop;
-    console.log(headerHeight, scroll);
+    // console.log(headerHeight, scroll);
     var location = target.getBoundingClientRect().top + scroll - headerHeight;
     $("html, body").animate({
         scrollTop: location,
