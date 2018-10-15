@@ -3,6 +3,7 @@ var videoBtn = document.querySelector('.video-close-btn');
 var videoFont = document.querySelector('.top-video-font');
 var videoFontEnd = document.querySelector('.top-video-font-end');
 var videoMask = document.querySelector('.video-mask');
+var fontShow;
 
 var videoFontTime = 4;
 document.documentElement.style.setProperty('--video-font-time', `${videoFontTime}s`);
@@ -24,7 +25,7 @@ video.addEventListener('playing', function () {
     }, offsetTime);
 
     var stayTime = 0.5;
-    window.setTimeout(() => {
+    fontShow = window.setTimeout(() => {
         // videoFont.classList.remove('top-video-font-opacity-show');
         window.setTimeout(() => {
             videoFontEnd.classList.add('top-video-font-end-opacity-show');
@@ -49,6 +50,7 @@ videoBtn.addEventListener('click', () => {
     videoBtn.classList.add('d-none');
     videoFont.classList.add('d-none');
     videoMask.classList.add('d-none');
+    clearTimeout(fontShow);
 });
 document.querySelector('.top-nav-item').addEventListener('click', function (e) {
     e.preventDefault();
